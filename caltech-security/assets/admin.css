@@ -1,0 +1,254 @@
+/* Caltech Security settings screen. Scoped so it never touches the rest of wp-admin. */
+
+.caltech-sec {
+    max-width: 1080px;
+}
+
+.caltech-sec__intro {
+    margin: 4px 0 16px;
+    font-size: 14px;
+    color: #50575e;
+}
+
+.caltech-sec-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: start;
+    margin: 0 0 4px;
+}
+
+.caltech-sec-card,
+.caltech-sec-panel {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.caltech-sec-card {
+    padding: 16px 20px 18px;
+}
+
+.caltech-sec-card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 0 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f1;
+}
+
+.caltech-sec-card__head h2,
+.caltech-sec-panel h2 {
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.caltech-sec-pill {
+    flex: none;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+}
+
+.caltech-sec-pill.is-on {
+    background: #edfaef;
+    color: #1a7f37;
+}
+
+.caltech-sec-pill.is-off {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.caltech-sec-field {
+    display: block;
+    margin: 0 0 6px;
+    font-weight: 600;
+}
+
+.caltech-sec-url {
+    display: flex;
+    align-items: stretch;
+    max-width: 100%;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.caltech-sec-url:focus-within {
+    border-color: #2271b1;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.caltech-sec-url__base {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0 10px;
+    background: #f6f7f7;
+    color: #50575e;
+    border-right: 1px solid #dcdcde;
+    line-height: 32px;
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.caltech-sec-url input[type="text"] {
+    flex: 0 0 11rem;
+    width: 11rem;
+    height: 32px;
+    margin: 0;
+    padding: 0 10px;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.caltech-sec-url input[type="text"]:focus {
+    border: 0;
+    box-shadow: none;
+    outline: none;
+}
+
+.caltech-sec-card .description {
+    margin: 8px 0 0;
+}
+
+.caltech-sec-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 4px 0 0;
+}
+
+.caltech-sec-actions .button,
+.caltech-sec-actions .button-primary {
+    margin: 0;
+    vertical-align: middle;
+    text-decoration: none;
+}
+
+.caltech-sec-stat {
+    margin: 0 0 12px;
+    color: #50575e;
+}
+
+.caltech-sec-callout {
+    margin: 0 0 14px;
+    padding: 12px 14px;
+    background: #f6f7f7;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+}
+
+.caltech-sec-callout p {
+    margin: 0 0 10px;
+}
+
+.caltech-sec-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.caltech-sec-check input {
+    margin-top: 2px;
+}
+
+.caltech-sec-panel {
+    margin-top: 8px;
+    padding: 4px 0 0;
+}
+
+.caltech-sec-panel h2 {
+    padding: 12px 16px 0;
+}
+
+.caltech-sec-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px 16px;
+}
+
+.caltech-sec-search input[type="search"] {
+    width: 240px;
+    max-width: 100%;
+}
+
+.caltech-sec-search .button {
+    margin: 0;
+}
+
+.caltech-sec-users {
+    border: 0;
+    border-top: 1px solid #c3c4c7;
+    box-shadow: none;
+}
+
+.caltech-sec-users .caltech-sec-user strong {
+    display: block;
+}
+
+.caltech-sec-users .caltech-sec-user span {
+    color: #646970;
+    font-size: 12px;
+}
+
+.caltech-sec-users .column-role,
+.caltech-sec-users .column-status {
+    width: 18%;
+}
+
+.caltech-sec-users .column-actions {
+    width: 8%;
+    text-align: right;
+}
+
+.caltech-sec-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.caltech-sec-badge.is-on {
+    background: #edfaef;
+    color: #1a7f37;
+}
+
+.caltech-sec-badge.is-off {
+    background: #fcf0f1;
+    color: #b32d2e;
+}
+
+@media (max-width: 782px) {
+    .caltech-sec-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .caltech-sec-url {
+        display: block;
+    }
+
+    .caltech-sec-url__base {
+        display: block;
+        border-right: 0;
+        border-bottom: 1px solid #dcdcde;
+    }
+
+    .caltech-sec-url input[type="text"] {
+        width: 100%;
+    }
+}
