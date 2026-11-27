@@ -3,7 +3,7 @@
  * Plugin Name:       Caltech WP Security
  * Plugin URI:        https://dash.caltech.it.com
  * Description:       Moves the WordPress login to a custom URL and requires two-factor authentication (authenticator app + recovery codes) for every account, enforced server-side. Managed entirely from its own settings page.
- * Version:           1.0.0
+ * Version:           1.0.1
  * Requires at least: 5.8
  * Requires PHP:      8.0
  * Author:            Caltech Hosting
@@ -16,7 +16,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('CALTECH_SECURITY_VERSION', '1.0.0');
+define('CALTECH_SECURITY_VERSION', '1.0.1');
 define('CALTECH_SECURITY_FILE', __FILE__);
 define('CALTECH_SECURITY_DIR', plugin_dir_path(__FILE__));
 define('CALTECH_SECURITY_URL', plugin_dir_url(__FILE__));

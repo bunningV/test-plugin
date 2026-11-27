@@ -3,7 +3,7 @@ Contributors: caltechhosting
 Tags: security, login, two-factor, 2fa, totp
 Requires at least: 5.8
 Requires PHP: 8.0
-Stable tag: 1.0.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 
 Custom login URL and mandatory two-factor authentication, managed from one settings page.
@@ -67,6 +67,10 @@ the salts, existing 2FA setups stop working and each user must be reset and set 
   in). Other integrations can opt in with the `caltech_security_trust_login` filter.
 
 == Changelog ==
+
+= 1.0.1 =
+* Auto-updates can be turned off and on from the Plugins screen. They are on by default for new installs.
+* The update checker is bundled with the plugin, so the Plugins screen shows the auto-update option.
 
 = 1.0.0 =
 * Initial release: custom login URL, mandatory TOTP 2FA with recovery codes, settings page.
