@@ -19,24 +19,24 @@ jobs:
       - name: Check version matches tag
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          HEADER=$(grep -E '^ \* Version:' test-plugin/caltech-security.php | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
-          CONST=$(grep -E "define\('CALTECH_SECURITY_VERSION'" test-plugin/caltech-security.php | sed -E "s/.*'([^']+)'.*/\1/")
-          STABLE=$(grep -E '^Stable tag:' test-plugin/readme.txt | sed -E 's/Stable tag:[[:space:]]*//' | tr -d '[:space:]')
+          HEADER=$(grep -E '^ \* Version:' caltech-security.php | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          CONST=$(grep -E "define\('CALTECH_SECURITY_VERSION'" caltech-security.php | sed -E "s/.*'([^']+)'.*/\1/")
+          STABLE=$(grep -E '^Stable tag:' readme.txt | sed -E 's/Stable tag:[[:space:]]*//' | tr -d '[:space:]')
           echo "tag=$TAG header=$HEADER constant=$CONST stable_tag=$STABLE"
           if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$CONST" ] || [ "$TAG" != "$STABLE" ]; then
             echo "Version mismatch. Set the plugin header, CALTECH_SECURITY_VERSION and readme.txt Stable tag to $TAG before tagging." >&2
             exit 1
           fi
 
-      - name: Install runtime dependencies
-        working-directory: test-plugin
-        run: composer install --no-dev --optimize-autoloader --no-interaction
-
-      - name: Build zip
-        # The zip must unpack to a single test-plugin/ folder so WordPress installs it in place.
+      - name: Build plugin zip
+        # WordPress needs the zip to contain exactly one folder, test-plugin/, with the plugin files inside.
         run: |
-          zip -r test-plugin.zip test-plugin \
-            -x 'test-plugin/composer.json' 'test-plugin/composer.lock'
+          STAGE=build/test-plugin
+          mkdir -p "$STAGE"
+          cp -r caltech-security.php readme.txt uninstall.php includes assets composer.json composer.lock "$STAGE/"
+          (cd "$STAGE" && composer install --no-dev --optimize-autoloader --no-interaction)
+          rm "$STAGE/composer.json" "$STAGE/composer.lock"
+          (cd build && zip -rq ../test-plugin.zip test-plugin)
 
       - name: Publish GitHub release
         env:
