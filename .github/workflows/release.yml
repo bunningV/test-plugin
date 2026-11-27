@@ -1,6 +1,6 @@
 name: Release
 
-# Runs when a version tag such as v1.0.1 is pushed. Builds caltech-security.zip and
+# Runs when a version tag such as v1.0.1 is pushed. Builds test-plugin.zip and
 # attaches it to a GitHub release, which the plugin's update checker picks up.
 on:
   push:
@@ -19,9 +19,9 @@ jobs:
       - name: Check version matches tag
         run: |
           TAG="${GITHUB_REF_NAME#v}"
-          HEADER=$(grep -E '^ \* Version:' caltech-security/caltech-security.php | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
-          CONST=$(grep -E "define\('CALTECH_SECURITY_VERSION'" caltech-security/caltech-security.php | sed -E "s/.*'([^']+)'.*/\1/")
-          STABLE=$(grep -E '^Stable tag:' caltech-security/readme.txt | sed -E 's/Stable tag:[[:space:]]*//' | tr -d '[:space:]')
+          HEADER=$(grep -E '^ \* Version:' test-plugin/caltech-security.php | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          CONST=$(grep -E "define\('CALTECH_SECURITY_VERSION'" test-plugin/caltech-security.php | sed -E "s/.*'([^']+)'.*/\1/")
+          STABLE=$(grep -E '^Stable tag:' test-plugin/readme.txt | sed -E 's/Stable tag:[[:space:]]*//' | tr -d '[:space:]')
           echo "tag=$TAG header=$HEADER constant=$CONST stable_tag=$STABLE"
           if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$CONST" ] || [ "$TAG" != "$STABLE" ]; then
             echo "Version mismatch. Set the plugin header, CALTECH_SECURITY_VERSION and readme.txt Stable tag to $TAG before tagging." >&2
@@ -34,18 +34,18 @@ jobs:
           tools: composer
 
       - name: Install runtime dependencies
-        working-directory: caltech-security
+        working-directory: test-plugin
         run: composer install --no-dev --optimize-autoloader --no-interaction
 
       - name: Build zip
-        # The zip must unpack to a single caltech-security/ folder so WordPress installs it in place.
+        # The zip must unpack to a single test-plugin/ folder so WordPress installs it in place.
         run: |
-          zip -r caltech-security.zip caltech-security \
-            -x 'caltech-security/composer.json' 'caltech-security/composer.lock'
+          zip -r test-plugin.zip test-plugin \
+            -x 'test-plugin/composer.json' 'test-plugin/composer.lock'
 
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create "$GITHUB_REF_NAME" caltech-security.zip \
+          gh release create "$GITHUB_REF_NAME" test-plugin.zip \
             --title "$GITHUB_REF_NAME" --generate-notes

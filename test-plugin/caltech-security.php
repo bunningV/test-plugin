@@ -40,9 +40,9 @@ if (file_exists($caltechSecurityAutoload)) {
     $caltechSecurityUpdates = \YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker(
         'https://github.com/bunningV/test-plugin/',
         CALTECH_SECURITY_FILE,
-        'caltech-security'
+        'test-plugin'
     );
-    $caltechSecurityUpdates->getVcsApi()->enableReleaseAssets('/^caltech-security\.zip$/');
+    $caltechSecurityUpdates->getVcsApi()->enableReleaseAssets('/^test-plugin\.zip$/');
 }
 
 // Default new installs to auto-updating. Site admins can still turn auto-updates off per plugin.
