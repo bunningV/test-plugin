@@ -8,7 +8,7 @@ if (! defined('WP_UNINSTALL_PLUGIN')) {
     exit;
 }
 
-foreach (['caltech_security_login_slug', 'caltech_security_enforce_2fa', 'caltech_security_allow_app_passwords'] as $option) {
+foreach (['caltech_security_login_slug', 'caltech_security_enforce_2fa', 'caltech_security_allow_app_passwords', 'caltech_security_autoupdate_default'] as $option) {
     delete_option($option);
 }
 

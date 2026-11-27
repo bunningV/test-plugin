@@ -43,10 +43,18 @@ if (file_exists(CALTECH_SECURITY_DIR . 'vendor/autoload.php')) {
     )->getVcsApi()->enableReleaseAssets();
 }
 
-// New installs auto-update. Admins can still turn auto-updates off for this plugin.
-add_filter('auto_update_plugin', static function ($update, $item) {
-    return isset($item->plugin) && $item->plugin === plugin_basename(CALTECH_SECURITY_FILE) ? true : $update;
-}, 10, 2);
+// Auto-updates default to on, set once on first activation. After that the Plugins screen toggle
+// is the admin's choice, so it stays off if they turn it off.
+register_activation_hook(CALTECH_SECURITY_FILE, static function (): void {
+    if (get_option('caltech_security_autoupdate_default')) {
+        return;
+    }
+
+    $enabled = (array) get_site_option('auto_update_plugins', []);
+    $enabled[] = plugin_basename(CALTECH_SECURITY_FILE);
+    update_site_option('auto_update_plugins', array_values(array_unique($enabled)));
+    update_option('caltech_security_autoupdate_default', 1);
+});
 
 add_action('plugins_loaded', static function (): void {
     \CaltechSecurity\Plugin::instance()->boot();
