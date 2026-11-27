@@ -28,11 +28,6 @@ jobs:
             exit 1
           fi
 
-      - uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.0'
-          tools: composer
-
       - name: Install runtime dependencies
         working-directory: test-plugin
         run: composer install --no-dev --optimize-autoloader --no-interaction
