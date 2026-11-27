@@ -32,16 +32,14 @@ require_once CALTECH_SECURITY_DIR . 'includes/Profile.php';
 require_once CALTECH_SECURITY_DIR . 'includes/Admin.php';
 
 // Updates are the zip attached to each GitHub release (see .github/workflows/release.yml).
-// Skipped when vendor/ is absent, e.g. a dev checkout without `composer install`.
-if (file_exists(CALTECH_SECURITY_DIR . 'vendor/autoload.php')) {
-    require_once CALTECH_SECURITY_DIR . 'vendor/autoload.php';
+// The checker is bundled in lib/, so it is present however the plugin was installed.
+require_once CALTECH_SECURITY_DIR . 'lib/plugin-update-checker/plugin-update-checker.php';
 
-    \YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker(
-        'https://github.com/bunningV/test-plugin/',
-        CALTECH_SECURITY_FILE,
-        'test-plugin'
-    )->getVcsApi()->enableReleaseAssets();
-}
+\YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker(
+    'https://github.com/bunningV/test-plugin/',
+    CALTECH_SECURITY_FILE,
+    'test-plugin'
+)->getVcsApi()->enableReleaseAssets();
 
 // Auto-updates default to on, set once on first activation. After that the Plugins screen toggle
 // is the admin's choice, so it stays off if they turn it off.

@@ -33,9 +33,7 @@ jobs:
         run: |
           STAGE=build/test-plugin
           mkdir -p "$STAGE"
-          cp -r caltech-security.php readme.txt uninstall.php includes assets composer.json composer.lock "$STAGE/"
-          (cd "$STAGE" && composer install --no-dev --optimize-autoloader --no-interaction)
-          rm "$STAGE/composer.json" "$STAGE/composer.lock"
+          cp -r caltech-security.php readme.txt uninstall.php includes assets lib "$STAGE/"
           (cd build && zip -rq ../test-plugin.zip test-plugin)
 
       - name: Publish GitHub release
