@@ -1,0 +1,51 @@
+name: Release
+
+# Runs when a version tag such as v1.0.1 is pushed. Builds caltech-security.zip and
+# attaches it to a GitHub release, which the plugin's update checker picks up.
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check version matches tag
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          HEADER=$(grep -E '^ \* Version:' caltech-security/caltech-security.php | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')
+          CONST=$(grep -E "define\('CALTECH_SECURITY_VERSION'" caltech-security/caltech-security.php | sed -E "s/.*'([^']+)'.*/\1/")
+          STABLE=$(grep -E '^Stable tag:' caltech-security/readme.txt | sed -E 's/Stable tag:[[:space:]]*//' | tr -d '[:space:]')
+          echo "tag=$TAG header=$HEADER constant=$CONST stable_tag=$STABLE"
+          if [ "$TAG" != "$HEADER" ] || [ "$TAG" != "$CONST" ] || [ "$TAG" != "$STABLE" ]; then
+            echo "Version mismatch. Set the plugin header, CALTECH_SECURITY_VERSION and readme.txt Stable tag to $TAG before tagging." >&2
+            exit 1
+          fi
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+          tools: composer
+
+      - name: Install runtime dependencies
+        working-directory: caltech-security
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Build zip
+        # The zip must unpack to a single caltech-security/ folder so WordPress installs it in place.
+        run: |
+          zip -r caltech-security.zip caltech-security \
+            -x 'caltech-security/composer.json' 'caltech-security/composer.lock'
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" caltech-security.zip \
+            --title "$GITHUB_REF_NAME" --generate-notes

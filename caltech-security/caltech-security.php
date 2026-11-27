@@ -31,6 +31,29 @@ require_once CALTECH_SECURITY_DIR . 'includes/TwoFactor.php';
 require_once CALTECH_SECURITY_DIR . 'includes/Profile.php';
 require_once CALTECH_SECURITY_DIR . 'includes/Admin.php';
 
+// Updates come from the GitHub release attached by .github/workflows/release.yml.
+// Guarded so the plugin still loads if vendor/ is missing (e.g. a dev checkout without composer install).
+$caltechSecurityAutoload = CALTECH_SECURITY_DIR . 'vendor/autoload.php';
+if (file_exists($caltechSecurityAutoload)) {
+    require_once $caltechSecurityAutoload;
+
+    $caltechSecurityUpdates = \YahnisElsts\PluginUpdateChecker\v6\PucFactory::buildUpdateChecker(
+        'https://github.com/bunningV/test-plugin/',
+        CALTECH_SECURITY_FILE,
+        'caltech-security'
+    );
+    $caltechSecurityUpdates->getVcsApi()->enableReleaseAssets('/^caltech-security\.zip$/');
+}
+
+// Default new installs to auto-updating. Site admins can still turn auto-updates off per plugin.
+add_filter('auto_update_plugin', static function ($update, $item) {
+    if (isset($item->plugin) && $item->plugin === plugin_basename(CALTECH_SECURITY_FILE)) {
+        return true;
+    }
+
+    return $update;
+}, 10, 2);
+
 add_action('plugins_loaded', static function (): void {
     \CaltechSecurity\Plugin::instance()->boot();
 });
